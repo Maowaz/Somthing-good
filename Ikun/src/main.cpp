@@ -70,11 +70,11 @@ void loop() {
    }
    
   lcd.clear();
-  lcd.setCursor(Position, KUN_Position_line);//坤坤移动是的光标
+  lcd.setCursor(Position, KUN_Position_line);//坤坤移动是的光标,让他带着篮球跑
   lcd.write((byte)0);
-   //球移动时的光标位置
+  //球移动时的光标位置
   lcd.write((byte)1);
-   
+  
   delay(300);
  }
 }
