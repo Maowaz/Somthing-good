@@ -1,0 +1,55 @@
+ if (randomNumber>= 1 && randomNumber<= 3)
+        {
+            display.println();
+            /* code */
+        }
+        
+
+#include <Wire.h>
+#include <Adafruit_GFX.h>
+#include <Adafruit_SSD1306.h>
+
+#define SCREEN_WIDTH 128
+#define SCREEN_HEIGHT 64
+#define SSD1306_I2C_ADDRESS 0x3C
+#define TOUCH_PIN 4 // 触摸传感器连接到 D4
+
+Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1);
+
+void setup() {
+    Serial.begin(9600);
+    pinMode(TOUCH_PIN, INPUT);
+    
+    // 初始化显示屏
+    if(!display.begin(SSD1306_I2C_ADDRESS, SSD1306_I2C_ADDRESS)) {
+        Serial.println(F("SSD1306 allocation failed"));
+        for(;;); // 不继续执行
+    }
+    
+    display.clearDisplay(); // 清空显示屏
+    display.setTextColor(WHITE); // 设置文本颜色为白色
+    display.setTextSize(1); // 设置文本大小
+    display.setCursor(0, 0); // 设置光标位置
+    display.println("Touch to get:"); // 显示初始化文本
+    display.display(); // 刷新显示内容
+}
+
+void loop() {
+    // 读取触摸传感器的状态
+    if (digitalRead(TOUCH_PIN) == HIGH) {
+        display.clearDisplay(); // 清空显示屏
+        display.setCursor(0, 0); // 重置光标位置
+
+        // 生成一个随机数
+        int randomNumber = random(1, 6); // 生成范围在 1 到 5 的随机数
+        display.print("Random Number: "); // 显示随机数文本
+        display.println(randomNumber); // 显示生成的随机数
+        display.display(); // 刷新显示
+        
+        // 等待触摸释放（防止多次触摸）
+        while (digitalRead(TOUCH_PIN) == HIGH) {
+            delay(10); // 等待一段时间
+        }
+        delay(100); // 防抖动延迟
+    }
+}
